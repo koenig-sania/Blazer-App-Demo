@@ -31,7 +31,7 @@ jobs:
         docker build -t cmagcr.azurecr.io/blazorappdemo:latest ./BlazorAppDemo
         docker push cmagcr.azurecr.io/blazorappdemo:latest
 
-    # 5️⃣ Deploy or Update Container Instance
+    # 5️⃣ Deploy or Update ACI Container
     - name: Deploy or Update ACI Container
       shell: bash
       run: |
@@ -53,6 +53,7 @@ jobs:
           --resource-group $RG_NAME \
           --name $CONTAINER_NAME \
           --image $IMAGE \
+          --os-type Linux \                # 
           --registry-login-server $ACR_SERVER \
           --registry-username $ACR_USERNAME \
           --registry-password $ACR_PASSWORD \
