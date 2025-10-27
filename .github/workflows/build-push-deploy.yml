@@ -3,6 +3,7 @@ name: Build, Push, and Deploy Blazor App to ACI
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build-push-deploy:
