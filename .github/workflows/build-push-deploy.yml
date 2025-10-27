@@ -10,35 +10,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1️⃣ Checkout
+    # 1️⃣ Checkout code
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # 2️⃣ Login to Azure using Service Principal
+    # 2️⃣ Log in to Azure using Service Principal
     - name: Azure Login
       uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # 3️⃣ Build and push Docker image to ACR
-    - name: Build and Push to ACR
-      uses: azure/docker-login@v1
-      with:
-        login-server: <youracrname>.azurecr.io
-        username: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
-        password: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
-
-    - run: |
-        docker build -t cmagcr.azurecr.io/blazorappdemo:latest ./BlazorAppDemo
-        docker push cmagcr.azurecr.io/blazorappdemo:latest
-
-    # 4️⃣ Deploy to Azure Container Instance
-    - name: Deploy Container to ACI
+    # 3️⃣ Log in to Azure Container Registry
+    - name: Azure Container Registry Login
       run: |
+        az acr login --name cmagcr
+
+    # 4️⃣ Build and Push Docker Image (with version tags)
+    - name: Build and Push Docker Image
+      run: |
+        IMAGE_TAG=${{ github.run_number }}
+        docker build -t cmagcr.azurecr.io/blazorappdemo:latest -t cmagcr.azurecr.io/blazorappdemo:${IMAGE_TAG} ./BlazorAppDemo
+        docker push cmagcr.azurecr.io/blazorappdemo:latest
+        docker push cmagcr.azurecr.io/blazorappdemo:${IMAGE_TAG}
+
+    # 5️⃣ Deploy or Update Container Instance
+    - name: Deploy or Update Container Instance
+      run: |
+        IMAGE=cmagcr.azurecr.io/blazorappdemo:latest
+        RG_NAME=devRG
+        CONTAINER_NAME=blazorappdemo
+
+        echo "Deploying container instance..."
         az container create \
-          --resource-group <your-resource-group> \
-          --name blazorappdemo \
-          --image cmagcr.azurecr.io/blazorappdemo:latest \
+          --resource-group $RG_NAME \
+          --name $CONTAINER_NAME \
+          --image $IMAGE \
           --dns-name-label blazorappdemo${{ github.run_number }} \
           --ports 80 \
-          --restart-policy Always
+          --restart-policy Always || \
+        az container update \
+          --resource-group $RG_NAME \
+          --name $CONTAINER_NAME \
+          --image $IMAGE
+
+        echo "Deployment complete!"
