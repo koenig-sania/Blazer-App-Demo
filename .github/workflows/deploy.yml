@@ -10,29 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1️⃣ Checkout repository
+    # Checkout repository
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # 2️⃣ Setup .NET SDK
+    # Setup .NET SDK
     - name: Setup .NET 9
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.0.x'
 
-    # 3️⃣ Restore dependencies
+    # Restore dependencies
     - name: Restore dependencies
       run: dotnet restore BlazorAppDemo/BlazorAppDemo.csproj
 
-    # 4️⃣ Build project
+    # Build project
     - name: Build project
       run: dotnet build BlazorAppDemo/BlazorAppDemo.csproj --configuration Release --no-restore
 
-    # 5️⃣ Publish project
+    # Publish project
     - name: Publish project
       run: dotnet publish BlazorAppDemo/BlazorAppDemo.csproj --configuration Release --output ./publish
 
-    # 6️⃣ Deploy to Azure Web App
+    # Deploy to Azure Web App
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
