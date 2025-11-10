@@ -1,4 +1,4 @@
-name: Packaging Blazor App to Azure
+name: Packages in CI/CD Blazor App to Azure
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: read
-  packages: write     # Allows publishing to GitHub Packages
+  packages: write     # Required to publish packages to GitHub Packages
   id-token: write
 
 jobs:
@@ -16,17 +16,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout source code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Setup .NET SDK
       - name: Setup .NET 9
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
 
-      # Add GitHub Packages as a NuGet source
       - name: Configure GitHub Packages as NuGet source
         run: |
           dotnet nuget add source \
@@ -35,23 +32,17 @@ jobs:
             --store-password-in-clear-text \
             --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
 
-      # Restore dependencies
       - name: Restore dependencies
         run: dotnet restore BlazorAppDemo/BlazorAppDemo.csproj
 
-      # Build project
       - name: Build project
         run: dotnet build BlazorAppDemo/BlazorAppDemo.csproj --configuration Release --no-restore
 
-      # Pack the project
       - name: Package Blazor App
         run: dotnet pack BlazorAppDemo/BlazorAppDemo.csproj --configuration Release --output ./nupkgs
 
-      # Publish package to GitHub Packages
       - name: Publish package to GitHub Packages
-        run: dotnet nuget push "./nupkgs/*.nupkg" \
-              --api-key ${{ secrets.GITHUB_TOKEN }} \
-              --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+        run: dotnet nuget push "./nupkgs/*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
 
   deploy:
     name: Deploy Blazor App to Azure
@@ -59,7 +50,11 @@ jobs:
     needs: build
 
     steps:
-      # Configure NuGet to use GitHub Packages
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
       - name: Configure GitHub Packages as NuGet source
         run: |
           dotnet nuget add source \
@@ -68,20 +63,16 @@ jobs:
             --store-password-in-clear-text \
             --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
 
-      # Create a temporary directory for deployment
       - name: Prepare publish directory
         run: mkdir -p ./publish
 
-      # Install the Blazor App package from GitHub Packages
-      - name: Download package from GitHub Packages
+      - name: Install Blazor App package from GitHub Packages
         run: |
           dotnet new console -n TempApp
           cd TempApp
           dotnet add package BlazorAppDemo --source "github"
-          # Extract the latest versioned package contents
           cp -r ~/.nuget/packages/blazorappdemo/*/*/* ../publish/
 
-      # Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
