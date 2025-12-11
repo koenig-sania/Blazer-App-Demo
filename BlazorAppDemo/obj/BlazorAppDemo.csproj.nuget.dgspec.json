@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Backups\\projects\\blazer-app-demo\\BlazorAppDemo\\BlazorAppDemo.csproj": {}
+    "C:\\Users\\sania\\Koenig Solutions\\Courses\\GH Series (GitHub)\\GH-200\\demo\\blazer-app-demo\\BlazorAppDemo\\BlazorAppDemo.csproj": {}
   },
   "projects": {
-    "C:\\Backups\\projects\\blazer-app-demo\\BlazorAppDemo\\BlazorAppDemo.csproj": {
+    "C:\\Users\\sania\\Koenig Solutions\\Courses\\GH Series (GitHub)\\GH-200\\demo\\blazer-app-demo\\BlazorAppDemo\\BlazorAppDemo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Backups\\projects\\blazer-app-demo\\BlazorAppDemo\\BlazorAppDemo.csproj",
+        "projectUniqueName": "C:\\Users\\sania\\Koenig Solutions\\Courses\\GH Series (GitHub)\\GH-200\\demo\\blazer-app-demo\\BlazorAppDemo\\BlazorAppDemo.csproj",
         "projectName": "BlazorAppDemo",
-        "projectPath": "C:\\Backups\\projects\\blazer-app-demo\\BlazorAppDemo\\BlazorAppDemo.csproj",
-        "packagesPath": "C:\\Users\\secops\\.nuget\\packages\\",
-        "outputPath": "C:\\Backups\\projects\\blazer-app-demo\\BlazorAppDemo\\obj\\",
+        "projectPath": "C:\\Users\\sania\\Koenig Solutions\\Courses\\GH Series (GitHub)\\GH-200\\demo\\blazer-app-demo\\BlazorAppDemo\\BlazorAppDemo.csproj",
+        "packagesPath": "C:\\Users\\sania\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sania\\Koenig Solutions\\Courses\\GH Series (GitHub)\\GH-200\\demo\\blazer-app-demo\\BlazorAppDemo\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\secops\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\sania\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -68,7 +64,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
