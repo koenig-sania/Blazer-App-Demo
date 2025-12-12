@@ -1,0 +1,11 @@
+name: Caller Workflow
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  call-reusable:
+    uses: msania3009/Gh-200-class-demo-1/.github/workflows/reusable.yml@main
+    with:
+      greeting: "Sania"
